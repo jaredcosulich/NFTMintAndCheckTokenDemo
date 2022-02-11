@@ -1,0 +1,40 @@
+{
+  "name": "basic-next-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx next dev",
+    "dev:next_template": "NEXT_TEMPLATE=1 npx next dev --port 3001",
+    "build": "npx next build",
+    "start": "npx next start",
+    "lint": "npx next lint",
+    "test": "npx jest --watch",
+    "test:next_template": "npx jest --testLocationInResults --forceExit --run-in-band --reporters=\"<rootDir>/__tests__/next_template_reporter.js\"",
+    "test:next_template:path": "sh -c 'npx jest ${0} --testLocationInResults --forceExit --runTestsByPath --run-in-band --reporters=\"<rootDir>/__tests__/next_template_reporter.js\"'",
+    "test:ci": "npx jest --runInBand",
+    "e2e": "npx playwright test __e2e__"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.0",
+    "next": "12.0.9",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-test-renderer": "^17.0.2",
+    "tailwindcss": "^2.2.19",
+    "postcss": "^8.3.11",
+    "javascript-state-machine": "^3.1.0",
+    "ethers": "^5.5.1",
+    "@walletconnect/web3-provider": "^1.7.1",
+    "web3modal": "^1.9.5"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@types/react": "^17.0.27",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "jest": "^27.2.2",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.3.5"
+  }
+}

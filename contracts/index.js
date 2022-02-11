@@ -1,0 +1,1 @@
+export { default as SimpleURIAndPriceNFTWithWithdrawalRoyalty } from './SimpleURIAndPriceNFTWithWithdrawalRoyalty'
