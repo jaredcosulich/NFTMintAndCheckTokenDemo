@@ -1,7 +1,6 @@
-This component takes a web3modal instance and provides a button to trigger the modal.
+This is a demo workflow for minting with the [nod-nft-mint-and-check-token npm package](https://www.npmjs.com/package/nod-nft-mint-and-check-token).
 
-Once the wallet is selected the onConnect callback will be called with a [Provider](https://docs.ethers.io/v5/api/providers/provider/).
+It can be run by cloning the repo and running:
 
-If the user clicks away from the modal then the state of the component will be reset.
-
-All props besides "onConnect" and "web3Modal" are passed to the button, including the children of the component, which should likely be the text of the button. 
+- yarn
+- yarn dev
