@@ -5,5 +5,4 @@ It can be run by cloning the repo and running:
 - yarn
 - yarn dev
 
-More extensive documentation can be found at
-[https://nodlabsinc.notion.site/NFTMintAndCheckTokenDemo-Documentation-8df927f535f642fbaddc5776b3a8a6f6](https://nodlabsinc.notion.site/NFTMintAndCheckTokenDemo-Documentation-8df927f535f642fbaddc5776b3a8a6f6)
+More extensive documentation can be [here](https://nodlabsinc.notion.site/NFTMintAndCheckTokenDemo-Documentation-8df927f535f642fbaddc5776b3a8a6f6)
