@@ -34,7 +34,10 @@ const MintNFTWithPriceAPI = ({ provider, contract, onMint  }) => {
         setStatusMessage(message);
       },
       onMint,
-      onFailure: () => setMinting(false)
+      onFailure: (code) => {
+        setStatusMessage(NodNFT.lib.humanReadableMetamaskError(code));
+        setMinting(false)
+      }
     })
   }
 
