@@ -1,6 +1,7 @@
 import {
   TWCircleSpinner,
-  MintPriceAndButton
+  MintPriceAndButton,
+  MintingEtherscanLinkMessage
 } from '.'
 
 import { useState } from 'react';
