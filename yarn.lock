@@ -4952,10 +4952,10 @@ next@12.0.9:
     "@next/swc-win32-ia32-msvc" "12.0.9"
     "@next/swc-win32-x64-msvc" "12.0.9"
 
-nod-nft-mint-and-check-token@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/nod-nft-mint-and-check-token/-/nod-nft-mint-and-check-token-0.0.3.tgz#708910f100aa3d6dc578b895938aaa0781efdfba"
-  integrity sha512-ijtqtZ6SVeb2k+lRzxpmOSixHknZZ9cowqYM6hUJqjn9P2xi/Fgm5tMD4uKoEhRKniBT7n8/EtWv9rMbPtyDFQ==
+nod-nft-mint-and-check-token@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/nod-nft-mint-and-check-token/-/nod-nft-mint-and-check-token-0.0.6.tgz#653223554daad02bb9a374f939b2ea7eaf2fecfb"
+  integrity sha512-CsfT5MWd8j7mZoLtpGV52+WE5i8cUO3sscpl66+gvMUqt9WfFQdvn+jxchUp4+zt9yOK3lZUPD5DqqX/1KYwKA==
   dependencies:
     "@walletconnect/web3-provider" "^1.7.1"
     ethers "^5.5.1"

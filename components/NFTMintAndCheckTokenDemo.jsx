@@ -4,11 +4,13 @@ import {
   WalletHasTokenFlowAPI
 } from '.'
 
+import { ContractInfo } from '../contracts';
+
 const NFTMintAndCheckTokenDemo = () => {  
   return (
     <TWFullScreen>
       <TWCenteredContent>
-        <WalletHasTokenFlowAPI />
+        <WalletHasTokenFlowAPI contractMetadata={ContractInfo}/>
       </TWCenteredContent>
     </TWFullScreen>
   )

@@ -69,8 +69,8 @@ const WalletHasTokenFlowAPI = ({ contractMetadata }) => {
         case 'CONNECTED':
           setSpinnerMessage('Checking the network...')
           const network = await info.current.provider.getNetwork();
-          info.current.network = network.name
-          if (network.name !== contractMetadata.network) {
+          info.current.network = network.chainId
+          if (info.current.network !== contractMetadata.network) {
             transitionState('badNetwork')
           } else {
             transitionState('goodNetwork')
@@ -123,8 +123,8 @@ const WalletHasTokenFlowAPI = ({ contractMetadata }) => {
       )
     case 'BAD_NETWORK':
       return <WrongEthereumNetworkMessage 
-        badNetwork={info.current.network}
-        goodNetwork={contractMetadata.network}
+        badNetworkId={info.current.network}
+        goodNetworkId={contractMetadata.network}
       />
     case 'MINT':
       return (

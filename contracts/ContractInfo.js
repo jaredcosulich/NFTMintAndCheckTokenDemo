@@ -1,7 +1,7 @@
-const SimpleURIAndPriceNFTWithWithdrawalRoyalty = {
-  network: "rinkeby",
-  address: "0x538d777A79fFd83e3b939008544c6dC71a48fA53",
-  abi: [
+const ContractInfo = {
+  "deployedAt": "2022-03-14T18:42:36.662",
+  "address": "0xCc6072D95C3e75eF35344B30669722236E8C6854",
+  "abi": [
     {
       "type": "constructor",
       "inputs": [
@@ -262,13 +262,7 @@ const SimpleURIAndPriceNFTWithWithdrawalRoyalty = {
     {
       "name": "mint",
       "type": "function",
-      "inputs": [
-        {
-          "name": "tokenURI",
-          "type": "string",
-          "internalType": "string"
-        }
-      ],
+      "inputs": [],
       "outputs": [
         {
           "name": "",
@@ -545,7 +539,8 @@ const SimpleURIAndPriceNFTWithWithdrawalRoyalty = {
       "outputs": [],
       "stateMutability": "nonpayable"
     }
-  ]
+  ],
+  "network": 4
 };
-
-export default SimpleURIAndPriceNFTWithWithdrawalRoyalty;
+    
+export default ContractInfo;

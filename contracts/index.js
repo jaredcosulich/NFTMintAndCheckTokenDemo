@@ -1,1 +1,1 @@
-export { default as SimpleURIAndPriceNFTWithWithdrawalRoyalty } from './SimpleURIAndPriceNFTWithWithdrawalRoyalty'
+export { default as ContractInfo } from './ContractInfo'

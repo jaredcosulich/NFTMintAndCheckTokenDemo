@@ -14,16 +14,10 @@ const MintNFTWithPriceAPI = ({ provider, contract, onMint  }) => {
   const mint = async (mintPriceInWei) => {
     setMinting(true)
 
-    // Make call to Arweave endpoint
-    // const metadataUri = 'https://arweave.net/ree7K2412t0Io6Mv8A3e6DqL_jogEM9Oainu9VRn8yQ'
-    // This contract already has the base URI
-    const metadataUri = 'ree7K2412t0Io6Mv8A3e6DqL_jogEM9Oainu9VRn8yQ'
-
     setStatusMessage(null)
     await NodNFT.lib.mintWithLifecycleHooks({ 
       contract,
       provider,
-      metadataUri,
       mintPriceInWei,
       onTransaction: (transaction) => {
         const message = (
