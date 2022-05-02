@@ -1,6 +1,6 @@
 const ContractInfo = {
-  "deployedAt": "2022-03-24T01:32:04.587",
-  "address": "0x517FDA9025D072Fb344e7E03b1b5E25Ddfe23acc",
+  "deployedAt": "2022-05-01T13:05:04.36",
+  "address": "0xeecA309fBED4F106A1aA3E5E36f3DfEe8f252773",
   "abi": [
     {
       "type": "constructor",
@@ -22,6 +22,11 @@ const ContractInfo = {
         },
         {
           "name": "priceInWei",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "maxSupply",
           "type": "uint256",
           "internalType": "uint256"
         }
@@ -165,6 +170,19 @@ const ContractInfo = {
         }
       ],
       "anonymous": false
+    },
+    {
+      "name": "MAX_SUPPLY",
+      "type": "function",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
     },
     {
       "name": "approve",
@@ -414,6 +432,19 @@ const ContractInfo = {
           "name": "approved",
           "type": "bool",
           "internalType": "bool"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "name": "setMaxSupply",
+      "type": "function",
+      "inputs": [
+        {
+          "name": "newMaxSupply",
+          "type": "uint256",
+          "internalType": "uint256"
         }
       ],
       "outputs": [],
