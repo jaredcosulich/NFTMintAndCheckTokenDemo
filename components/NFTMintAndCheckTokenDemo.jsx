@@ -4,13 +4,33 @@ import {
   TWCenteredContent,
   WalletHasTokenFlowAPI
 } from '.'
-import { tailwind } from 'ethos-react2';
+
+import { tailwind, lib } from 'ethos-react2';
 
 import { ContractInfo } from '../contracts';
 import { TWButton } from '.';
 
 const NFTMintAndCheckTokenDemo = () => {  
   const [user, setUser] = useState();
+  const [message, setMessage] = useState();
+
+  const mint = () => {
+    if (!user) return;
+    console.log("TRANSACT!")
+    lib.transact({
+      email: user.email,
+      network: ContractInfo.network,
+      address: ContractInfo.address,
+      abi: ContractInfo.abi,
+      functionName: 'mint',
+      inputValues: [{ value: 100000000000000 }], 
+      onReady: () => setMessage("Signing Minting Request..."),
+      onSigned: () => setMessage("Sending Minting Request..."),
+      onSent: () => setMessage("Waiting For Confirmation..."),
+      onComplete: () => setMessage("Minting Completed, Confirming Transaction..."),
+      onConfirmed: () => setMessage("Minting Complete!")
+    })
+  }
 
   return (
     <TWFullScreen>
@@ -32,9 +52,17 @@ const NFTMintAndCheckTokenDemo = () => {
                   To join our community you need to mint a token!
                 </div>  
 
-                <TWButton>
+                <TWButton
+                  onClick={mint}
+                >
                   Mint!
                 </TWButton>
+
+                {message && (
+                  <div className='pt-3'>
+                    {message}
+                  </div>
+                )}
               </div>
             </div> 
           ) : (
