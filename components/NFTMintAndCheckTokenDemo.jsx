@@ -17,13 +17,39 @@ const NFTMintAndCheckTokenDemo = () => {
   const [gated, setGated] = useState(false)
 
   const checkNfts = useCallback(async () => {
-    const nfts = await lib.walletContents(user.wallet.address)
-    for (const nft of nfts) { 
-      if (nft.token_address.toLowerCase() === ContractInfo.address.toLowerCase()) {
-        setNft(nft);
-        break;
-      }
+    const { network, address, abi } = ContractInfo;
+    
+    const transferInformation = await lib.tokenTransfers(
+      network, 
+      user.wallet.address, 
+      address, 
+      abi
+    )
+
+    if (transferInformation.currentTokenIds.length === 0) {
+      return;
     }
+    
+    const tokenUri = await lib.query({
+      network, 
+      address, 
+      abi, 
+      functionName: 'tokenURI', 
+      inputValues: [transferInformation.currentTokenIds[0]]
+    })
+
+    const response = await fetch(tokenUri)
+    const metadata = await response.text()
+
+    setNft({ metadata })
+
+    // const nfts = await lib.walletContents(user.wallet.address)
+    // for (const nft of nfts) { 
+    //   if (nft.token_address.toLowerCase() === ContractInfo.address.toLowerCase()) {
+    //     setNft(nft);
+    //     break;
+    //   }
+    // }
   }, [user]);
 
   useEffect(() => {
@@ -57,9 +83,8 @@ const NFTMintAndCheckTokenDemo = () => {
       onReady: () => setMessage("Signing Minting Request..."),
       onSigned: () => setMessage("Sending Minting Request..."),
       onSent: () => setMessage("Waiting For Confirmation..."),
-      onComplete: () => setMessage("Minting Completed, Confirming Transaction..."),
-      onConfirmed: () => {
-        setMessage(null)
+      onComplete: () => {
+        setMessage("Minting Completed, Confirming Transaction...");
         checkNfts();
       }
     })
