@@ -124,9 +124,10 @@ const NFTMintAndCheckTokenDemo = () => {
         onReady: () => setMessage("Signing Minting Request..."),
         onSigned: () => setMessage("Sending Minting Request..."),
         onSent: () => setMessage("Waiting For Confirmation..."),
-        onComplete: () => {
+        onComplete: async () => {
           setMessage("Minting Completed, Confirming Transaction...");
-          checkNfts();
+          await checkNfts();
+          setMessage("")
         }
       })
     } catch (error) {
