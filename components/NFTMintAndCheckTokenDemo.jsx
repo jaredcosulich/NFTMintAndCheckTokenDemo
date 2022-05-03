@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   TWFullScreen,
   TWCenteredContent,
@@ -15,6 +15,7 @@ const NFTMintAndCheckTokenDemo = () => {
   const [message, setMessage] = useState();
   const [nft, setNft] = useState();
   const [gated, setGated] = useState(false)
+  const [showWallet, setShowWallet] = useState();
 
   const checkNfts = useCallback(async () => {
     const { network, address, abi } = ContractInfo;
@@ -70,24 +71,67 @@ const NFTMintAndCheckTokenDemo = () => {
     fetchUser();
   }, [user])
 
-  const mint = () => {
+  const confirmTransaction = () => {
+    return new Promise((resolve, reject) => {
+      setShowWallet(
+        <div className='text-center'>
+          <h1 className='text-lg pb-3'>Confirm Transaction</h1>
+          <div>
+            Are you sure you want mint a token? 
+            <br/>
+            It will cost you 0.001 ETH.
+          </div>
+          <div className='pt-3 flex justify-around'>
+            <TWButton
+              onClick = {() => {
+                resolve(true);
+                setShowWallet(null)
+              }}
+            >
+              Confirm
+            </TWButton>
+            <TWButton
+              classMap={{
+                background: 'bg-red-600'
+              }}
+              onClick={() => {
+                resolve(false);
+                setShowWallet(null)
+              }}
+            >
+              Cancel
+            </TWButton>
+          </div>
+        </div>
+      );
+    })
+  }
+
+  const mint = async () => {
     if (!user) return;
 
-    lib.transact({
-      email: user.email,
-      network: ContractInfo.network,
-      address: ContractInfo.address,
-      abi: ContractInfo.abi,
-      functionName: 'mint',
-      inputValues: [{ value: 100000000000000 }], 
-      onReady: () => setMessage("Signing Minting Request..."),
-      onSigned: () => setMessage("Sending Minting Request..."),
-      onSent: () => setMessage("Waiting For Confirmation..."),
-      onComplete: () => {
-        setMessage("Minting Completed, Confirming Transaction...");
-        checkNfts();
-      }
-    })
+    const confirmation = await confirmTransaction();
+    if (!confirmation) return;
+
+    try {
+      lib.transact({
+        email: user.email,
+        network: ContractInfo.network,
+        address: ContractInfo.address,
+        abi: ContractInfo.abi,
+        functionName: 'mint',
+        inputValues: [{ value: 100000000000000 }], 
+        onReady: () => setMessage("Signing Minting Request..."),
+        onSigned: () => setMessage("Sending Minting Request..."),
+        onSent: () => setMessage("Waiting For Confirmation..."),
+        onComplete: () => {
+          setMessage("Minting Completed, Confirming Transaction...");
+          checkNfts();
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const logout = () => {
@@ -103,6 +147,13 @@ const NFTMintAndCheckTokenDemo = () => {
 
   return (
     <TWFullScreen>
+      {showWallet && (
+        <div className='absolute -top-0 right-60'>
+          <div className='p-6 border-b border-l border-r bg-green-100'>
+            {showWallet}
+          </div>
+        </div>  
+      )} 
       <div className='container mx-auto'>
         { user && (
           <div className='border-b px-3 py-6 flex justify-between'>
