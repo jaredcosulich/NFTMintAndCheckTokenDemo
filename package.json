@@ -18,7 +18,7 @@
     "@walletconnect/web3-provider": "^1.7.1",
     "autoprefixer": "^10.4.0",
     "ethers": "^5.5.1",
-    "ethos-react2": "^0.0.6",
+    "ethos-react2": "^0.0.7",
     "javascript-state-machine": "^3.1.0",
     "next": "12.0.9",
     "nod-nft-mint-and-check-token": "^0.0.6",

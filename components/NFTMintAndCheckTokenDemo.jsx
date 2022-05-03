@@ -14,6 +14,7 @@ const NFTMintAndCheckTokenDemo = () => {
   const [user, setUser] = useState();
   const [message, setMessage] = useState();
   const [nft, setNft] = useState();
+  const [balance, setBalance] = useState();
   const [gated, setGated] = useState(false)
   const [showWallet, setShowWallet] = useState();
 
@@ -53,6 +54,15 @@ const NFTMintAndCheckTokenDemo = () => {
     // }
   }, [user]);
 
+  const checkBalance = useCallback(async () => {
+    const balance = await lib.ethBalance({ 
+      network: ContractInfo.network,
+      address: user.wallet.address
+    });
+    
+    setBalance(parseInt(balance * 100000) / 100000)
+  }, [user]);
+
   useEffect(() => {
     if (!user) {
       const activeUser = lib.activeUser();
@@ -66,6 +76,7 @@ const NFTMintAndCheckTokenDemo = () => {
     const fetchUser = async () => {
       setUser(user);
       checkNfts();
+      checkBalance();
     };
 
     fetchUser();
@@ -127,6 +138,7 @@ const NFTMintAndCheckTokenDemo = () => {
         onComplete: async () => {
           setMessage("Minting Completed, Confirming Transaction...");
           await checkNfts();
+          await checkBalance();
           setMessage("")
         }
       })
@@ -183,6 +195,15 @@ const NFTMintAndCheckTokenDemo = () => {
                     </h3>
                     <div className='py-3'>
                       Address: {user.wallet.address}
+                    </div>
+                    <div className='pb-3'>
+                      Balance: {balance} ETH 
+                      <span 
+                        className='ml-1 font-bold cursor-pointer' 
+                        onClick={checkBalance}
+                      >
+                        &#x21bb;
+                      </span>
                     </div>
                     <div className='py-3'>
                       {nft ? (
