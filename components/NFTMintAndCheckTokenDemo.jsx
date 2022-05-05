@@ -10,6 +10,8 @@ import { tailwind, lib } from 'ethos-react2';
 import { ContractInfo } from '../contracts';
 import { TWButton } from '.';
 
+const host = 'http://localhost:3001';
+
 const NFTMintAndCheckTokenDemo = () => {  
   const [user, setUser] = useState();
   const [message, setMessage] = useState();
@@ -25,7 +27,8 @@ const NFTMintAndCheckTokenDemo = () => {
       network, 
       user.wallet.address, 
       address, 
-      abi
+      abi,
+      host
     )
 
     if (transferInformation.currentTokenIds.length === 0) {
@@ -37,7 +40,8 @@ const NFTMintAndCheckTokenDemo = () => {
       address, 
       abi, 
       functionName: 'tokenURI', 
-      inputValues: [transferInformation.currentTokenIds[0]]
+      inputValues: [transferInformation.currentTokenIds[0]],
+      host
     })
 
     const response = await fetch(tokenUri)
@@ -45,7 +49,7 @@ const NFTMintAndCheckTokenDemo = () => {
 
     setNft({ metadata })
 
-    // const nfts = await lib.walletContents(user.wallet.address)
+    // const nfts = await lib.walletContents(user.wallet.address, host)
     // for (const nft of nfts) { 
     //   if (nft.token_address.toLowerCase() === ContractInfo.address.toLowerCase()) {
     //     setNft(nft);
@@ -57,7 +61,8 @@ const NFTMintAndCheckTokenDemo = () => {
   const checkBalance = useCallback(async () => {
     const balance = await lib.ethBalance({ 
       network: ContractInfo.network,
-      address: user.wallet.address
+      address: user.wallet.address,
+      host
     });
     
     setBalance(parseInt(balance * 100000) / 100000)
@@ -140,7 +145,8 @@ const NFTMintAndCheckTokenDemo = () => {
           await checkNfts();
           await checkBalance();
           setMessage("")
-        }
+        },
+        host
       })
     } catch (error) {
       console.log(error);
