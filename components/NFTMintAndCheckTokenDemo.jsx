@@ -108,7 +108,7 @@ const NFTMintAndCheckTokenDemo = () => {
             </TWButton>
             <TWButton
               classMap={{
-                background: 'bg-red-600'
+                background: 'bg-red-600 text-white'
               }}
               onClick={() => {
                 resolve(false);
@@ -121,6 +121,69 @@ const NFTMintAndCheckTokenDemo = () => {
         </div>
       );
     })
+  }
+
+  const showAccount = () => {
+    checkBalance();
+
+    if (showWallet) {
+      setShowWallet(null);
+      return;
+    }
+    
+    setShowWallet(
+      <div className='text-center'>
+        <h1 className='text-lg'>Your Account</h1>
+        <div className='text-xs text-gray-600 pb-3'>
+          {user.email}
+        </div>
+        <div
+          className='cursor-pointer'
+          onClick={() => navigator.clipboard.writeText(user.wallet.address)}
+        >
+          <div className='text-sm -mb-3'>
+            Wallet Address
+          </div>
+          
+          <div className='text-xs text-gray-600'>
+            {user.wallet.address.substr(0,24)}... 
+            <span               
+              className='text-2xl font-bold ml-1 h-3 cursor-pointer'
+            >
+              &#x2398;
+            </span>
+          </div>
+        </div>
+        <div className='text-center py-3'>
+          {balance} ETH
+          <span 
+            className='ml-1 font-bold cursor-pointer' 
+            onClick={checkBalance}
+          >
+            &#x21bb;
+          </span>
+        </div>
+        <div className='pt-3 flex justify-around'>
+          <TWButton
+            classMap={{
+              background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+              font: 'text-sm'
+            }}
+          >
+            Dashboard
+          </TWButton>
+          <TWButton
+            classMap={{
+              background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+              font: 'text-sm'
+            }}
+            onClick={() => setShowWallet(null)}
+          >
+            Close
+          </TWButton>
+        </div>
+      </div>
+    );
   }
 
   const mint = async () => {
@@ -167,9 +230,14 @@ const NFTMintAndCheckTokenDemo = () => {
   return (
     <TWFullScreen>
       {showWallet && (
-        <div className='absolute -top-0 right-60'>
-          <div className='p-6 border-b border-l border-r bg-green-100'>
-            {showWallet}
+        <div className='absolute top-0 right-12 z-50'>
+          <div className='border-b border-l border-r border-gray-800 rounded-b-lg bg-gray-100'>
+            <div className='border-b border-gray-800 bg-white px-3 py-1 text-center text-lg'>
+              Ethos Wallet
+            </div>
+            <div className='p-3'>
+              {showWallet}
+            </div>
           </div>
         </div>  
       )} 
@@ -179,6 +247,21 @@ const NFTMintAndCheckTokenDemo = () => {
             <div>NFT Gated Content Demo</div>
             <div>
               <TWButton
+                classMap={{
+                  margin: 'mr-6',
+                  background: 'bg-white-500',
+                  fontColor: 'text-gray-800',
+                  border: 'border-2 rounded-lg'
+                }}
+                onClick={showAccount}
+              >
+                Wallet
+              </TWButton>
+              <TWButton
+                classMap={{
+                  background: 'bg-gray-800',
+                  border: 'border-2 rounded-lg'
+                }}
                 onClick={logout}
               >
                 Logout
@@ -196,21 +279,6 @@ const NFTMintAndCheckTokenDemo = () => {
                   </div> 
                 ) : (
                   <>
-                    <h3 className='text-lg'>
-                      Hi {user.email}!
-                    </h3>
-                    <div className='py-3'>
-                      Address: {user.wallet.address}
-                    </div>
-                    <div className='pb-3'>
-                      Balance: {balance} ETH 
-                      <span 
-                        className='ml-1 font-bold cursor-pointer' 
-                        onClick={checkBalance}
-                      >
-                        &#x21bb;
-                      </span>
-                    </div>
                     <div className='py-3'>
                       {nft ? (
                         <>
@@ -233,6 +301,9 @@ const NFTMintAndCheckTokenDemo = () => {
                           <div className='py-3'>
                             To join our community you need to mint a token!
                           </div>  
+                          <div className='pb-3 text-sm text-gray-500'>
+                            Minting costs 0.001 ETH 
+                          </div>
 
                           <TWButton
                             onClick={mint}
