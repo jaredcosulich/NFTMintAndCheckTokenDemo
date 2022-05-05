@@ -1,6 +1,6 @@
 const ContractInfo = {
-  "deployedAt": "2022-05-03T20:27:06.783",
-  "address": "0x8D0f2bb9304412D45b3C5fb3fb7c80a7E752a86f",
+  "deployedAt": "2022-05-05T22:22:22.621",
+  "address": "0x28554e716CEE4d182deb653d0f835ba69333aC43",
   "abi": [
     {
       "type": "constructor",
