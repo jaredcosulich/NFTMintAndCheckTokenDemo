@@ -66,6 +66,10 @@ const NFTMintAndCheckTokenDemo = () => {
     });
     
     setBalance(parseInt(balance * 100000) / 100000)
+
+    if ((showWallet || "").toString().indexOf("Mint") > -1) {
+      confirmTransaction();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -90,34 +94,69 @@ const NFTMintAndCheckTokenDemo = () => {
   const confirmTransaction = () => {
     return new Promise((resolve, reject) => {
       setShowWallet(
-        <div className='text-center'>
-          <h1 className='text-lg pb-3'>Confirm Transaction</h1>
-          <div>
-            Are you sure you want mint a token? 
-            <br/>
-            It will cost you 0.001 ETH.
-          </div>
-          <div className='pt-3 flex justify-around'>
-            <TWButton
-              onClick = {() => {
-                resolve(true);
-                setShowWallet(null)
-              }}
-            >
-              Confirm
-            </TWButton>
-            <TWButton
-              classMap={{
-                background: 'bg-red-600 text-white'
-              }}
-              onClick={() => {
-                resolve(false);
-                setShowWallet(null)
-              }}
-            >
-              Cancel
-            </TWButton>
-          </div>
+        <div className='text-center border-t border-gray-800 bg-white p-3 rounded-b-lg'>
+          <h3 className='pb-3'>Mint A Token!</h3>
+          {balance > 0.001 ? (
+            <>
+              <div className='text-sm'>
+                Are you sure you want to mint a token? 
+                <br/>
+                It will cost you 0.001 ETH.
+              </div>
+              <div className='pt-3 flex justify-around'>
+                <TWButton
+                  classMap={{
+                    background: 'bg-green-200 border border-gray-600 text-gray-600 rounded-lg',
+                    font: 'text-sm'
+                  }}
+                  onClick = {() => {
+                    resolve(true);
+                    setShowWallet(null)
+                  }}
+                >
+                  Confirm
+                </TWButton>
+                <TWButton
+                  classMap={{
+                    background: 'bg-red-200 border border-gray-600 text-gray-600 rounded-lg',
+                    font: 'text-sm'
+                  }}
+                  onClick={() => {
+                    resolve(false);
+                    setShowWallet(null)
+                  }}
+                >
+                  Cancel
+                </TWButton>
+              </div>
+            </>
+          ) : (
+            <div>
+              <div className='pb-3 text-xs'>
+                You don't have enough ETH in your wallet.
+                <br/>
+                You can use a credit cart to mint.
+              </div>
+              <div className='flex justify-around'>
+                <TWButton
+                  classMap={{
+                    background: 'bg-green-200 border border-gray-600 text-gray-600 rounded-lg',
+                    font: 'text-sm'
+                  }}
+                >
+                  Purchase
+                </TWButton>
+                <TWButton
+                  classMap={{
+                    background: 'bg-red-200 border border-gray-600 text-gray-600 rounded-lg',
+                    font: 'text-sm'
+                  }}
+                >
+                  Cancel
+                </TWButton>
+              </div>
+            </div>
+          )}
         </div>
       );
     })
@@ -132,56 +171,24 @@ const NFTMintAndCheckTokenDemo = () => {
     }
     
     setShowWallet(
-      <div className='text-center'>
-        <h1 className='text-lg'>Your Account</h1>
-        <div className='text-xs text-gray-600 pb-3'>
-          {user.email}
-        </div>
-        <div
-          className='cursor-pointer'
-          onClick={() => navigator.clipboard.writeText(user.wallet.address)}
+      <div className='flex justify-around pb-3'>
+        <TWButton
+          classMap={{
+            background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+            font: 'text-sm'
+          }}
         >
-          <div className='text-sm -mb-3'>
-            Wallet Address
-          </div>
-          
-          <div className='text-xs text-gray-600'>
-            {user.wallet.address.substr(0,24)}... 
-            <span               
-              className='text-2xl font-bold ml-1 h-3 cursor-pointer'
-            >
-              &#x2398;
-            </span>
-          </div>
-        </div>
-        <div className='text-center py-3'>
-          {balance} ETH
-          <span 
-            className='ml-1 font-bold cursor-pointer' 
-            onClick={checkBalance}
-          >
-            &#x21bb;
-          </span>
-        </div>
-        <div className='pt-3 flex justify-around'>
-          <TWButton
-            classMap={{
-              background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
-              font: 'text-sm'
-            }}
-          >
-            Dashboard
-          </TWButton>
-          <TWButton
-            classMap={{
-              background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
-              font: 'text-sm'
-            }}
-            onClick={() => setShowWallet(null)}
-          >
-            Close
-          </TWButton>
-        </div>
+          Dashboard
+        </TWButton>
+        <TWButton
+          classMap={{
+            background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+            font: 'text-sm'
+          }}
+          onClick={() => setShowWallet(null)}
+        >
+          Close
+        </TWButton>
       </div>
     );
   }
@@ -230,16 +237,47 @@ const NFTMintAndCheckTokenDemo = () => {
   return (
     <TWFullScreen>
       {showWallet && (
-        <div className='absolute top-0 right-12 z-50'>
+        <div className='absolute top-0 right-12 z-50 text-center'>
           <div className='border-b border-l border-r border-gray-800 rounded-b-lg bg-gray-100'>
             <div className='border-b border-gray-800 bg-white px-3 py-1 text-center text-lg'>
               Ethos Wallet
             </div>
             <div className='p-3'>
-              {showWallet}
+              <div className='text-xs text-gray-600 pb-3'>
+                {user.email}
+              </div>
+              <div
+                className='cursor-pointer'
+                onClick={() => navigator.clipboard.writeText(user.wallet.address)}
+              >
+                <div className='text-sm -mb-3'>
+                  Wallet Address
+                </div>
+                
+                <div className='text-xs text-gray-600'>
+                  {user.wallet.address.substr(0,24)}... 
+                  <span               
+                    className='text-2xl font-bold ml-1 h-3 cursor-pointer'
+                  >
+                    &#x2398;
+                  </span>
+                </div>
+              </div>
+              <div className='text-center pt-3'>
+                {balance} ETH
+                <span 
+                  className='ml-1 font-bold cursor-pointer' 
+                  onClick={checkBalance}
+                >
+                  &#x21bb;
+                </span>
+              </div>
             </div>
-          </div>
-        </div>  
+            <div>
+                {showWallet}
+              </div>
+          </div>  
+        </div>
       )} 
       <div className='container mx-auto'>
         { user && (
@@ -301,11 +339,15 @@ const NFTMintAndCheckTokenDemo = () => {
                           <div className='py-3'>
                             To join our community you need to mint a token!
                           </div>  
-                          <div className='pb-3 text-sm text-gray-500'>
+                          <div className='pb-12 text-sm text-gray-500'>
                             Minting costs 0.001 ETH 
                           </div>
 
                           <TWButton
+                            classMap={{
+                              padding: 'px-6 py-1',
+                              border: 'border-2 rounded-lg'
+                            }}
                             onClick={mint}
                           >
                             Mint!
