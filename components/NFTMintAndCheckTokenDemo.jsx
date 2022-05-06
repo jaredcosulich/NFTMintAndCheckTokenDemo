@@ -20,6 +20,12 @@ const NFTMintAndCheckTokenDemo = () => {
   const [gated, setGated] = useState(false)
   const [showWallet, setShowWallet] = useState();
 
+  if (typeof window !== 'undefined') {
+    window.onfocus = (e) => {
+      checkBalance();
+    }
+  }
+
   const checkNfts = useCallback(async () => {
     const { network, address, abi } = ContractInfo;
     
@@ -34,6 +40,8 @@ const NFTMintAndCheckTokenDemo = () => {
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
+
+    console.log("TOKEN ID", transferInformation.currentTokenIds[0])
     
     const tokenUri = await lib.query({
       network, 
@@ -59,6 +67,8 @@ const NFTMintAndCheckTokenDemo = () => {
   }, [user]);
 
   const checkBalance = useCallback(async () => {
+    if (!user) return;
+
     const balance = await lib.ethBalance({ 
       network: ContractInfo.network,
       address: user.wallet.address,
@@ -66,11 +76,16 @@ const NFTMintAndCheckTokenDemo = () => {
     });
     
     setBalance(parseInt(balance * 100000) / 100000)
-
-    if ((showWallet || "").toString().indexOf("Mint") > -1) {
-      confirmTransaction();
-    }
   }, [user]);
+
+  useEffect(() => {
+    console.log("HI")
+    console.log(document.getElementById('mint-header'))
+    if (document.getElementById('mint-header')) {
+      console.log("HI2")
+      mint();
+    }
+  }, [balance])
 
   useEffect(() => {
     if (!user) {
@@ -92,10 +107,11 @@ const NFTMintAndCheckTokenDemo = () => {
   }, [user])
 
   const confirmTransaction = () => {
+    console.log("BALANCE", balance, balance > 0.001)
     return new Promise((resolve, reject) => {
       setShowWallet(
         <div className='text-center border-t border-gray-800 bg-white p-3 rounded-b-lg'>
-          <h3 className='pb-3'>Mint A Token!</h3>
+          <h3 className='pb-3' id='mint-header'>Mint A Token!</h3>
           {balance > 0.001 ? (
             <>
               <div className='text-sm'>
@@ -135,7 +151,7 @@ const NFTMintAndCheckTokenDemo = () => {
               <div className='pb-3 text-xs'>
                 You don't have enough ETH in your wallet.
                 <br/>
-                You can use a credit cart to mint.
+                You can use a credit card to mint.
               </div>
               <div className='flex justify-around'>
                 <TWButton
@@ -151,6 +167,7 @@ const NFTMintAndCheckTokenDemo = () => {
                     background: 'bg-red-200 border border-gray-600 text-gray-600 rounded-lg',
                     font: 'text-sm'
                   }}
+                  onClick={() => setShowWallet(null)}
                 >
                   Cancel
                 </TWButton>
@@ -211,10 +228,9 @@ const NFTMintAndCheckTokenDemo = () => {
         onSigned: () => setMessage("Sending Minting Request..."),
         onSent: () => setMessage("Waiting For Confirmation..."),
         onComplete: async () => {
-          setMessage("Minting Completed, Confirming Transaction...");
+          setMessage("")
           await checkNfts();
           await checkBalance();
-          setMessage("")
         },
         host
       })
@@ -239,10 +255,10 @@ const NFTMintAndCheckTokenDemo = () => {
       {showWallet && (
         <div className='absolute top-0 right-12 z-50 text-center'>
           <div className='border-b border-l border-r border-gray-800 rounded-b-lg bg-gray-100'>
-            <div className='border-b border-gray-800 bg-white px-3 py-1 text-center text-lg'>
+            <div className='border-b border-gray-800 bg-white py-3 text-center text-lg'>
               Ethos Wallet
             </div>
-            <div className='p-3'>
+            <div className='p-6'>
               <div className='text-xs text-gray-600 pb-3'>
                 {user.email}
               </div>
@@ -265,12 +281,6 @@ const NFTMintAndCheckTokenDemo = () => {
               </div>
               <div className='text-center pt-3'>
                 {balance} ETH
-                <span 
-                  className='ml-1 font-bold cursor-pointer' 
-                  onClick={checkBalance}
-                >
-                  &#x21bb;
-                </span>
               </div>
             </div>
             <div>
