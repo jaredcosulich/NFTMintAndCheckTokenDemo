@@ -107,7 +107,6 @@ const NFTMintAndCheckTokenDemo = () => {
   }, [user])
 
   const confirmTransaction = () => {
-    console.log("BALANCE", balance, balance > 0.001)
     return new Promise((resolve, reject) => {
       setShowWallet(
         <div className='text-center border-t border-gray-800 bg-white p-3 rounded-b-lg'>
@@ -390,6 +389,79 @@ const NFTMintAndCheckTokenDemo = () => {
             {/* <WalletHasTokenFlowAPI contractMetadata={ContractInfo}/> */}
           </div>
         </TWCenteredContent>
+      </div>
+      <div className='hidden text-gray-600'>
+        <div>
+          <div className="relative z-10">
+            <div
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </div>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center -translate-y-36">
+                <div
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
+                    <div
+                      as="h3"
+                      className="text-xl font-medium leading-6 text-gray-900"
+                    >
+                      Sign In
+                    </div>
+                    <div className="mt-3">
+                      <p className="text-sm text-gray-500">
+                        Click to sign in with one of these methods:
+                      </p>
+                    </div>
+
+                    <div className="mt-3 py-3">
+                      <p className="text-sm text-gray-300 font-bold">
+                        [VARIOUS METHODS INCLUDING WALLET CONNECT]
+                      </p>
+                    </div>
+
+                    <div className="mt-3">
+                      <p className="text-sm text-gray-500">
+                        Or enter your email and we'll send you a magic link!
+                      </p>
+                    </div>
+
+                    <div className='mt-3'>
+                      <input
+                        type="email"
+                        className="border border-gray-300 px-3 py-1 w-10/12 rounded-md"
+                        placeholder="Email"
+                        required                        
+                      />
+                    </div>
+
+                    <div className="mt-3">
+                      <button
+                        type="button"
+                        className="focus:outline-none inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"                        
+                      >
+                        Send Magic Link
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </TWFullScreen>
   )
