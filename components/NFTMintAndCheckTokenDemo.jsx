@@ -79,10 +79,7 @@ const NFTMintAndCheckTokenDemo = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log("HI")
-    console.log(document.getElementById('mint-header'))
     if (document.getElementById('mint-header')) {
-      console.log("HI2")
       mint();
     }
   }, [balance])
@@ -91,7 +88,6 @@ const NFTMintAndCheckTokenDemo = () => {
     if (!user) {
       const activeUser = lib.activeUser();
       if (activeUser) {
-        console.log("Active User: ", activeUser)
         setUser(activeUser);
       }
       return;
@@ -109,7 +105,7 @@ const NFTMintAndCheckTokenDemo = () => {
   const confirmTransaction = () => {
     return new Promise((resolve, reject) => {
       setShowWallet(
-        <div className='text-center border-t border-gray-800 bg-white p-3 rounded-b-lg'>
+        <div className='text-center border-t border-slate-800 bg-white p-3 rounded-b-lg'>
           <h3 className='pb-3' id='mint-header'>Mint A Token!</h3>
           {balance > 0.001 ? (
             <>
@@ -121,7 +117,7 @@ const NFTMintAndCheckTokenDemo = () => {
               <div className='pt-3 flex justify-around'>
                 <TWButton
                   classMap={{
-                    background: 'bg-green-200 border border-gray-600 text-gray-600 rounded-lg',
+                    background: 'bg-green-200 border border-slate-600 text-slate-800 rounded-lg',
                     font: 'text-sm'
                   }}
                   onClick = {() => {
@@ -133,7 +129,7 @@ const NFTMintAndCheckTokenDemo = () => {
                 </TWButton>
                 <TWButton
                   classMap={{
-                    background: 'bg-red-200 border border-gray-600 text-gray-600 rounded-lg',
+                    background: 'bg-red-200 border border-slate-600 text-slate-800 rounded-lg',
                     font: 'text-sm'
                   }}
                   onClick={() => {
@@ -155,7 +151,7 @@ const NFTMintAndCheckTokenDemo = () => {
               <div className='flex justify-around'>
                 <TWButton
                   classMap={{
-                    background: 'bg-green-200 border border-gray-600 text-gray-600 rounded-lg',
+                    background: 'bg-green-200 border border-slate-600 text-slate-800 rounded-lg',
                     font: 'text-sm'
                   }}
                 >
@@ -163,7 +159,7 @@ const NFTMintAndCheckTokenDemo = () => {
                 </TWButton>
                 <TWButton
                   classMap={{
-                    background: 'bg-red-200 border border-gray-600 text-gray-600 rounded-lg',
+                    background: 'bg-red-200 border border-slate-600 text-slate-800 rounded-lg',
                     font: 'text-sm'
                   }}
                   onClick={() => setShowWallet(null)}
@@ -190,7 +186,7 @@ const NFTMintAndCheckTokenDemo = () => {
       <div className='flex justify-around pb-3'>
         <TWButton
           classMap={{
-            background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+            background: 'bg-white border border-slate-600 text-slate-800 rounded-lg',
             font: 'text-sm'
           }}
         >
@@ -198,7 +194,7 @@ const NFTMintAndCheckTokenDemo = () => {
         </TWButton>
         <TWButton
           classMap={{
-            background: 'bg-white border border-gray-600 text-gray-600 rounded-lg',
+            background: 'bg-white border border-slate-600 text-slate-800 rounded-lg',
             font: 'text-sm'
           }}
           onClick={() => setShowWallet(null)}
@@ -217,9 +213,9 @@ const NFTMintAndCheckTokenDemo = () => {
 
     try {
       lib.transact({
-        email: user.email,
         network: ContractInfo.network,
-        address: ContractInfo.address,
+        walletAddress: user.wallet.address,
+        contractAddress: ContractInfo.address,
         abi: ContractInfo.abi,
         functionName: 'mint',
         inputValues: [{ value: 100000000000000 }], 
@@ -253,12 +249,12 @@ const NFTMintAndCheckTokenDemo = () => {
     <TWFullScreen>
       {showWallet && (
         <div className='absolute top-0 right-12 z-50 text-center'>
-          <div className='border-b border-l border-r border-gray-800 rounded-b-lg bg-gray-100'>
-            <div className='border-b border-gray-800 bg-white py-3 text-center text-lg'>
+          <div className='border-b border-l border-r border-slate-800 rounded-b-lg bg-slate-100'>
+            <div className='border-b border-slate-800 bg-white py-3 text-center text-lg'>
               Ethos Wallet
             </div>
             <div className='p-6'>
-              <div className='text-xs text-gray-600 pb-3'>
+              <div className='text-xs text-slate-800 pb-3'>
                 {user.email}
               </div>
               <div
@@ -269,7 +265,7 @@ const NFTMintAndCheckTokenDemo = () => {
                   Wallet Address
                 </div>
                 
-                <div className='text-xs text-gray-600'>
+                <div className='text-xs text-slate-800'>
                   {user.wallet.address.substr(0,24)}... 
                   <span               
                     className='text-2xl font-bold ml-1 h-3 cursor-pointer'
@@ -297,7 +293,7 @@ const NFTMintAndCheckTokenDemo = () => {
                 classMap={{
                   margin: 'mr-6',
                   background: 'bg-white-500',
-                  fontColor: 'text-gray-800',
+                  fontColor: 'text-slate-800',
                   border: 'border-2 rounded-lg'
                 }}
                 onClick={showAccount}
@@ -306,7 +302,7 @@ const NFTMintAndCheckTokenDemo = () => {
               </TWButton>
               <TWButton
                 classMap={{
-                  background: 'bg-gray-800',
+                  background: 'bg-slate-800',
                   border: 'border-2 rounded-lg'
                 }}
                 onClick={logout}
@@ -348,7 +344,7 @@ const NFTMintAndCheckTokenDemo = () => {
                           <div className='py-3'>
                             To join our community you need to mint a token!
                           </div>  
-                          <div className='pb-12 text-sm text-gray-500'>
+                          <div className='pb-12 text-sm text-slate-500'>
                             Minting costs 0.001 ETH 
                           </div>
 
@@ -380,7 +376,7 @@ const NFTMintAndCheckTokenDemo = () => {
                   NFT Gated Content Demo
                 </h2>
                 <tailwind.SignInButton 
-                  className='bg-gray-200 px-3 py-1 rounded-lg' 
+                  className='bg-slate-200 px-3 py-1 rounded-lg' 
                   onSignIn={setUser}
                 />
               </div>
@@ -390,9 +386,9 @@ const NFTMintAndCheckTokenDemo = () => {
           </div>
         </TWCenteredContent>
       </div>
-      <div className='hidden text-gray-600'>
+      <div className='hidden text-slate-800'>
         <div>
-          <div className="relative z-10">
+          <div className="relative z-10 text-slate-500">
             <div
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -417,24 +413,24 @@ const NFTMintAndCheckTokenDemo = () => {
                   <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
                     <div
                       as="h3"
-                      className="text-xl font-medium leading-6 text-gray-900"
+                      className="text-xl font-medium leading-6 text-slate-800"
                     >
                       Sign In
                     </div>
                     <div className="mt-3">
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-500">
                         Click to sign in with one of these methods:
                       </p>
                     </div>
 
                     <div className="mt-3 py-3">
-                      <p className="text-sm text-gray-300 font-bold">
+                      <p className="text-sm text-slate-300 font-bold">
                         [VARIOUS METHODS INCLUDING WALLET CONNECT]
                       </p>
                     </div>
 
                     <div className="mt-3">
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-500">
                         Or enter your email and we'll send you a magic link!
                       </p>
                     </div>
@@ -442,7 +438,7 @@ const NFTMintAndCheckTokenDemo = () => {
                     <div className='mt-3'>
                       <input
                         type="email"
-                        className="border border-gray-300 px-3 py-1 w-10/12 rounded-md"
+                        className="border border-slate-300 px-3 py-1 w-10/12 rounded-md"
                         placeholder="Email"
                         required                        
                       />
