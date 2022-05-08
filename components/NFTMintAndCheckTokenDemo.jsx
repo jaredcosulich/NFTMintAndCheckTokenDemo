@@ -18,13 +18,6 @@ const NFTMintAndCheckTokenDemo = () => {
   const [nft, setNft] = useState();
   const [balance, setBalance] = useState();
   const [gated, setGated] = useState(false)
-  const [showWallet, setShowWallet] = useState();
-
-  if (typeof window !== 'undefined') {
-    window.onfocus = (e) => {
-      checkBalance();
-    }
-  }
 
   const checkNfts = useCallback(async () => {
     const { network, address, abi } = ContractInfo;
@@ -33,207 +26,40 @@ const NFTMintAndCheckTokenDemo = () => {
       network, 
       user.wallet.address, 
       address, 
-      abi,
-      host
+      abi
     )
 
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
-
-    console.log("TOKEN ID", transferInformation.currentTokenIds[0])
     
     const tokenUri = await lib.query({
       network, 
       address, 
       abi, 
       functionName: 'tokenURI', 
-      inputValues: [transferInformation.currentTokenIds[0]],
-      host
+      inputValues: [transferInformation.currentTokenIds[0]]
     })
 
     const response = await fetch(tokenUri)
     const metadata = await response.text()
 
     setNft({ metadata })
-
-    // const nfts = await lib.walletContents(user.wallet.address, host)
-    // for (const nft of nfts) { 
-    //   if (nft.token_address.toLowerCase() === ContractInfo.address.toLowerCase()) {
-    //     setNft(nft);
-    //     break;
-    //   }
-    // }
-  }, [user]);
-
-  const checkBalance = useCallback(async () => {
-    if (!user) return;
-
-    const balance = await lib.ethBalance({ 
-      network: ContractInfo.network,
-      address: user.wallet.address,
-      host
-    });
-    
-    setBalance(parseInt(balance * 100000) / 100000)
   }, [user]);
 
   useEffect(() => {
-    if (document.getElementById('mint-header')) {
-      mint();
-    }
-  }, [balance])
-
-  useEffect(() => {
-    if (!user) {
-      const activeUser = lib.activeUser();
-      if (activeUser) {
-        setUser(activeUser);
-      }
-      return;
-    }
-
-    const fetchUser = async () => {
+    const getUser = async () => {
+      const user = await lib.activeUser();
       setUser(user);
-      checkNfts();
-      checkBalance();
-    };
+    } 
 
-    fetchUser();
-  }, [user])
-
-  const confirmTransaction = () => {
-    return new Promise((resolve, reject) => {
-      setShowWallet(
-        <div className='text-center border-t border-slate-800 bg-white p-3 rounded-b-lg'>
-          <h3 className='pb-3' id='mint-header'>Mint A Token!</h3>
-          {balance > 0.001 ? (
-            <>
-              <div className='text-sm'>
-                Are you sure you want to mint a token? 
-                <br/>
-                It will cost you 0.001 ETH.
-              </div>
-              <div className='pt-3 flex justify-around'>
-                <TWButton
-                  classMap={{
-                    background: 'bg-green-200 border border-slate-600 text-slate-800 rounded-lg',
-                    font: 'text-sm'
-                  }}
-                  onClick = {() => {
-                    resolve(true);
-                    setShowWallet(null)
-                  }}
-                >
-                  Confirm
-                </TWButton>
-                <TWButton
-                  classMap={{
-                    background: 'bg-red-200 border border-slate-600 text-slate-800 rounded-lg',
-                    font: 'text-sm'
-                  }}
-                  onClick={() => {
-                    resolve(false);
-                    setShowWallet(null)
-                  }}
-                >
-                  Cancel
-                </TWButton>
-              </div>
-            </>
-          ) : (
-            <div>
-              <div className='pb-3 text-xs'>
-                You don't have enough ETH in your wallet.
-                <br/>
-                You can use a credit card to mint.
-              </div>
-              <div className='flex justify-around'>
-                <TWButton
-                  classMap={{
-                    background: 'bg-green-200 border border-slate-600 text-slate-800 rounded-lg',
-                    font: 'text-sm'
-                  }}
-                >
-                  Purchase
-                </TWButton>
-                <TWButton
-                  classMap={{
-                    background: 'bg-red-200 border border-slate-600 text-slate-800 rounded-lg',
-                    font: 'text-sm'
-                  }}
-                  onClick={() => setShowWallet(null)}
-                >
-                  Cancel
-                </TWButton>
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    })
-  }
-
-  const showAccount = () => {
-    checkBalance();
-
-    if (showWallet) {
-      setShowWallet(null);
-      return;
-    }
-    
-    setShowWallet(
-      <div className='flex justify-around pb-3'>
-        <TWButton
-          classMap={{
-            background: 'bg-white border border-slate-600 text-slate-800 rounded-lg',
-            font: 'text-sm'
-          }}
-        >
-          Dashboard
-        </TWButton>
-        <TWButton
-          classMap={{
-            background: 'bg-white border border-slate-600 text-slate-800 rounded-lg',
-            font: 'text-sm'
-          }}
-          onClick={() => setShowWallet(null)}
-        >
-          Close
-        </TWButton>
-      </div>
-    );
-  }
+    getUser();
+  }, [])
 
   const mint = async () => {
-    if (!user) return;
 
-    const confirmation = await confirmTransaction();
-    if (!confirmation) return;
-
-    try {
-      lib.transact({
-        network: ContractInfo.network,
-        walletAddress: user.wallet.address,
-        contractAddress: ContractInfo.address,
-        abi: ContractInfo.abi,
-        functionName: 'mint',
-        inputValues: [{ value: 100000000000000 }], 
-        onReady: () => setMessage("Signing Minting Request..."),
-        onSigned: () => setMessage("Sending Minting Request..."),
-        onSent: () => setMessage("Waiting For Confirmation..."),
-        onComplete: async () => {
-          setMessage("")
-          await checkNfts();
-          await checkBalance();
-        },
-        host
-      })
-    } catch (error) {
-      console.log(error);
-    }
   }
-
+  
   const logout = () => {
     lib.logout();
     setNft(null);
@@ -247,43 +73,6 @@ const NFTMintAndCheckTokenDemo = () => {
 
   return (
     <TWFullScreen>
-      {showWallet && (
-        <div className='absolute top-0 right-12 z-50 text-center'>
-          <div className='border-b border-l border-r border-slate-800 rounded-b-lg bg-slate-100'>
-            <div className='border-b border-slate-800 bg-white py-3 text-center text-lg'>
-              Ethos Wallet
-            </div>
-            <div className='p-6'>
-              <div className='text-xs text-slate-800 pb-3'>
-                {user.email}
-              </div>
-              <div
-                className='cursor-pointer'
-                onClick={() => navigator.clipboard.writeText(user.wallet.address)}
-              >
-                <div className='text-sm -mb-3'>
-                  Wallet Address
-                </div>
-                
-                <div className='text-xs text-slate-800'>
-                  {user.wallet.address.substr(0,24)}... 
-                  <span               
-                    className='text-2xl font-bold ml-1 h-3 cursor-pointer'
-                  >
-                    &#x2398;
-                  </span>
-                </div>
-              </div>
-              <div className='text-center pt-3'>
-                {balance} ETH
-              </div>
-            </div>
-            <div>
-                {showWallet}
-              </div>
-          </div>  
-        </div>
-      )} 
       <div className='container mx-auto'>
         { user && (
           <div className='border-b px-3 py-6 flex justify-between'>
@@ -296,7 +85,7 @@ const NFTMintAndCheckTokenDemo = () => {
                   fontColor: 'text-slate-800',
                   border: 'border-2 rounded-lg'
                 }}
-                onClick={showAccount}
+                onClick={lib.showWallet}
               >
                 Wallet
               </TWButton>
@@ -371,15 +160,23 @@ const NFTMintAndCheckTokenDemo = () => {
                 )}                
               </div> 
             ) : (
-              <div className='py-36'>
-                <h2 className='text-xl pb-6'>
-                  NFT Gated Content Demo
-                </h2>
-                <tailwind.SignInButton 
-                  className='bg-slate-200 px-3 py-1 rounded-lg' 
-                  onSignIn={setUser}
-                />
-              </div>
+              <>
+                {user === undefined ? (
+                  <div className='text-center'>
+                    ...
+                  </div>
+                ) : (
+                  <div className='py-36'>
+                    <h2 className='text-xl pb-6'>
+                      NFT Gated Content Demo
+                    </h2>
+                    <tailwind.SignInButton 
+                      className='bg-slate-200 px-3 py-1 rounded-lg' 
+                      onSignIn={setUser}
+                    />
+                  </div>
+                )}
+              </>              
             )}
             
             {/* <WalletHasTokenFlowAPI contractMetadata={ContractInfo}/> */}
