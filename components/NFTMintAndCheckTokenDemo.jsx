@@ -28,9 +28,7 @@ const NFTMintAndCheckTokenDemo = () => {
       address, 
       abi
     )
-
-    console.log("TRANSFERS", transferInformation);
-
+    
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
