@@ -28,7 +28,7 @@ const NFTMintAndCheckTokenDemo = () => {
       address, 
       abi
     )
-    
+
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
@@ -74,7 +74,8 @@ const NFTMintAndCheckTokenDemo = () => {
         onComplete: async () => {
           setMessage("Minting Completed, Confirming Transaction...");
           await checkNfts();
-          setMessage("")
+          setMessage("");
+          lib.hideWallet();
         }
       })
     } catch (error) {
