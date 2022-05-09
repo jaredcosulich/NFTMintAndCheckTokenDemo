@@ -58,7 +58,26 @@ const NFTMintAndCheckTokenDemo = () => {
   }, [])
 
   const mint = async () => {
-
+    try {
+      lib.transact({
+        network: ContractInfo.network,
+        address: ContractInfo.address,
+        abi: ContractInfo.abi,
+        functionName: 'mint',
+        inputValues: [{ value: 1000000000000000 }], 
+        onReady: () => setMessage("Signing Minting Request..."),
+        onSigned: () => setMessage("Sending Minting Request..."),
+        onSent: () => setMessage("Waiting For Confirmation..."),
+        onComplete: async () => {
+          setMessage("Minting Completed, Confirming Transaction...");
+          await checkNfts();
+          await checkBalance();
+          setMessage("")
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   const logout = () => {
