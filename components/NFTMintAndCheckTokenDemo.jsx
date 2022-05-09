@@ -17,7 +17,6 @@ const NFTMintAndCheckTokenDemo = () => {
   const [user, setUser] = useState();
   const [message, setMessage] = useState();
   const [nft, setNft] = useState();
-  const [balance, setBalance] = useState();
   const [gated, setGated] = useState(false)
 
   const checkNfts = useCallback(async () => {
@@ -29,6 +28,8 @@ const NFTMintAndCheckTokenDemo = () => {
       address, 
       abi
     )
+
+    console.log("TRANSFERS", transferInformation);
 
     if (transferInformation.currentTokenIds.length === 0) {
       return;
@@ -57,6 +58,11 @@ const NFTMintAndCheckTokenDemo = () => {
     getUser();
   }, [])
 
+  useEffect(() => {
+    if (!user) return;
+    checkNfts();
+  }, [user, checkNfts])
+
   const mint = async () => {
     try {
       lib.transact({
@@ -65,13 +71,11 @@ const NFTMintAndCheckTokenDemo = () => {
         abi: ContractInfo.abi,
         functionName: 'mint',
         inputValues: [{ value: 1000000000000000 }], 
-        onReady: () => setMessage("Signing Minting Request..."),
         onSigned: () => setMessage("Sending Minting Request..."),
         onSent: () => setMessage("Waiting For Confirmation..."),
         onComplete: async () => {
           setMessage("Minting Completed, Confirming Transaction...");
           await checkNfts();
-          await checkBalance();
           setMessage("")
         }
       })
