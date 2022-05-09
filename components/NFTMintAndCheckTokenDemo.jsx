@@ -11,6 +11,7 @@ import { ContractInfo } from '../contracts';
 import { TWButton } from '.';
 
 const host = 'http://localhost:3001';
+const appId = 'app1';
 
 const NFTMintAndCheckTokenDemo = () => {  
   const [user, setUser] = useState();
@@ -49,7 +50,7 @@ const NFTMintAndCheckTokenDemo = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await lib.activeUser();
+      const user = await lib.activeUser(appId);
       setUser(user);
     } 
 
@@ -61,7 +62,7 @@ const NFTMintAndCheckTokenDemo = () => {
   }
   
   const logout = () => {
-    lib.logout();
+    lib.logout(appId, false);
     setNft(null);
     setUser(null);
     setGated(false)
@@ -85,7 +86,7 @@ const NFTMintAndCheckTokenDemo = () => {
                   fontColor: 'text-slate-800',
                   border: 'border-2 rounded-lg'
                 }}
-                onClick={lib.showWallet}
+                onClick={() => lib.showWallet(appId)}
               >
                 Wallet
               </TWButton>
@@ -171,6 +172,7 @@ const NFTMintAndCheckTokenDemo = () => {
                       NFT Gated Content Demo
                     </h2>
                     <tailwind.SignInButton 
+                      appId={appId}
                       className='bg-slate-200 px-3 py-1 rounded-lg' 
                       onSignIn={setUser}
                     />
