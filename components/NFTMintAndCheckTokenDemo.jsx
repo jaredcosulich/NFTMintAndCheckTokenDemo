@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Orbit } from '@uiball/loaders'
 import {
   TWFullScreen,
   TWCenteredContent,
@@ -15,6 +16,7 @@ const appId = 'app1';
 
 const NFTMintAndCheckTokenDemo = () => {  
   const [user, setUser] = useState();
+  const [sent, setSent] = useState(false);
   const [message, setMessage] = useState();
   const [nft, setNft] = useState();
   const [gated, setGated] = useState(false)
@@ -74,8 +76,8 @@ const NFTMintAndCheckTokenDemo = () => {
         onComplete: async () => {
           setMessage("Minting Completed, Confirming Transaction...");
           await checkNfts();
-          setMessage("");
           lib.hideWallet();
+          setMessage("");
         }
       })
     } catch (error) {
@@ -185,19 +187,30 @@ const NFTMintAndCheckTokenDemo = () => {
             ) : (
               <>
                 {user === undefined ? (
-                  <div className='text-center'>
-                    ...
+                  <div className='h-screen flex flex-col justify-center'>
+                    <div className='flex justify-center mb-36'>
+                      <Orbit />
+                    </div>    
                   </div>
                 ) : (
                   <div className='py-36'>
                     <h2 className='text-xl pb-6'>
                       NFT Gated Content Demo
                     </h2>
-                    <tailwind.SignInButton 
-                      appId={appId}
-                      className='bg-slate-200 px-3 py-1 rounded-lg' 
-                      onSignIn={setUser}
-                    />
+                    {sent ? (
+                      <div className=''>
+                        An email has been sent to you with a link to login.
+                        <br/>
+                        <br/>
+                        You can close this window.
+                      </div>
+                    ) : (
+                      <tailwind.SignInButton 
+                        appId={appId}
+                        className='bg-slate-200 px-3 py-1 rounded-lg' 
+                        onSignIn={() => setSent(true)}
+                      />
+                    )}
                   </div>
                 )}
               </>              
