@@ -84,12 +84,21 @@ const NFTMintAndCheckTokenDemo = () => {
       console.log(error);
     }
   }
+
+  const login = (user) => {
+    if (!user) {
+      setSent(true);
+      return;
+    }
+    setUser(user);
+  }
   
   const logout = () => {
     lib.logout(appId, false);
     setNft(null);
     setUser(null);
-    setGated(false)
+    setSent(false);
+    setGated(false);
   }
 
   const enter = () => {
@@ -208,7 +217,7 @@ const NFTMintAndCheckTokenDemo = () => {
                       <tailwind.SignInButton 
                         appId={appId}
                         className='bg-slate-200 px-3 py-1 rounded-lg' 
-                        onSignIn={() => setSent(true)}
+                        onSignIn={login}
                       />
                     )}
                   </div>
@@ -220,7 +229,7 @@ const NFTMintAndCheckTokenDemo = () => {
           </div>
         </TWCenteredContent>
       </div>
-      <div className='hidden text-slate-800'>
+      <div className='hidden text-slate-800 justify-evenly cursor-pointer -mt-2'>
         <div>
           <div className="relative z-10 text-slate-500">
             <div
