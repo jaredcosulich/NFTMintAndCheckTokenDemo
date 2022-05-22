@@ -32,6 +32,7 @@ const NFTMintAndCheckTokenDemo = () => {
     )
 
     if (transferInformation.currentTokenIds.length === 0) {
+      setNft(null)
       return;
     }
     
@@ -164,22 +165,28 @@ const NFTMintAndCheckTokenDemo = () => {
                         </>
                       ) : (
                         <>
-                          <div className='py-3'>
-                            To join our community you need to mint a token!
-                          </div>  
-                          <div className='pb-12 text-sm text-slate-500'>
-                            Minting costs 0.001 ETH 
-                          </div>
+                          {nft === undefined ? (
+                            <Orbit />
+                          ) : (
+                            <>
+                              <div className='py-3'>
+                                To join our community you need to mint a token!
+                              </div>  
+                              <div className='pb-12 text-sm text-slate-500'>
+                                Minting costs 0.001 ETH 
+                              </div>
 
-                          <TWButton
-                            classMap={{
-                              padding: 'px-6 py-1',
-                              border: 'border-2 rounded-lg'
-                            }}
-                            onClick={mint}
-                          >
-                            Mint!
-                          </TWButton>
+                              <TWButton
+                                classMap={{
+                                  padding: 'px-6 py-1',
+                                  border: 'border-2 rounded-lg'
+                                }}
+                                onClick={mint}
+                              >
+                                Mint!
+                              </TWButton>
+                            </>
+                          )}
                         </>
                       )}
                       
@@ -232,27 +239,22 @@ const NFTMintAndCheckTokenDemo = () => {
       <div className='hidden text-slate-800 justify-evenly cursor-pointer -mt-2'>
         <div>
           <div className="relative z-10 text-slate-500">
-            <div
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </div>
+            <div className='ease-out duration-300' />
+            <div className='opacity-0' />
+            <div className='opacity-100' />
+            <div className='ease-in duration-200' />
+            <div className='opacity-100' />
+            <div className='opacity-0' />
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
 
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4 text-center -translate-y-36">
-                <div
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
+                <div className='ease-out duration-300'>
+                  <div className='opacity-0 scale-95' />
+                  <div className='opacity-100 scale-100' />
+                  <div className='ease-in duration-200' />
+                  <div className='opacity-100 scale-100' />
+                  <div className='opacity-0 scale-95' />
                   <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
                     <div
                       as="h3"
