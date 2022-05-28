@@ -236,74 +236,7 @@ const NFTMintAndCheckTokenDemo = () => {
           </div>
         </TWCenteredContent>
       </div>
-      <div className='hidden text-slate-800 justify-evenly cursor-pointer -mt-2'>
-        <div>
-          <div className="relative z-10 text-slate-500">
-            <div className='ease-out duration-300' />
-            <div className='opacity-0' />
-            <div className='opacity-100' />
-            <div className='ease-in duration-200' />
-            <div className='opacity-100' />
-            <div className='opacity-0' />
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center -translate-y-36">
-                <div className='ease-out duration-300'>
-                  <div className='opacity-0 scale-95' />
-                  <div className='opacity-100 scale-100' />
-                  <div className='ease-in duration-200' />
-                  <div className='opacity-100 scale-100' />
-                  <div className='opacity-0 scale-95' />
-                  <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
-                    <div
-                      as="h3"
-                      className="text-xl font-medium leading-6 text-slate-800"
-                    >
-                      Sign In
-                    </div>
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Click to sign in with one of these methods:
-                      </p>
-                    </div>
-
-                    <div className="mt-3 py-3">
-                      <p className="text-sm text-slate-300 font-bold">
-                        [VARIOUS METHODS INCLUDING WALLET CONNECT]
-                      </p>
-                    </div>
-
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Or enter your email and we'll send you a magic link!
-                      </p>
-                    </div>
-
-                    <div className='mt-3'>
-                      <input
-                        type="email"
-                        className="border border-slate-300 px-3 py-1 w-10/12 rounded-md"
-                        placeholder="Email"
-                        required                        
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <button
-                        type="button"
-                        className="focus:outline-none inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"                        
-                      >
-                        Send Magic Link
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </TWFullScreen>
   )
 }
