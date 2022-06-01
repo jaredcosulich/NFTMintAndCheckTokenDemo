@@ -11,7 +11,6 @@ import { tailwind, lib } from 'ethos-react2';
 import { ContractInfo } from '../contracts';
 import { TWButton } from '.';
 
-const host = 'http://localhost:3001';
 const appId = 'app1';
 
 const NFTMintAndCheckTokenDemo = () => {  
