@@ -13,7 +13,7 @@ import { TWButton } from '.';
 
 const appId = 'app1';
 
-const NFTMintAndCheckTokenDemo = () => {  
+const NFTMintAndCheckTokenDemo = () => {
   const [user, setUser] = useState();
   const [sent, setSent] = useState(false);
   const [message, setMessage] = useState();
@@ -24,35 +24,48 @@ const NFTMintAndCheckTokenDemo = () => {
     const { network, address, abi } = ContractInfo;
 
     console.log('contract address :>> ', address);
-    
+
     const transferInformation = await lib.tokenTransfers(
-      network, 
-      user.wallet.address, 
-      address, 
+      network,
+      user.wallet.address,
+      address,
       abi
     )
 
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
-    
+
+    console.log(transferInformation.currentTokenIds[0])
+
     const tokenUri = await lib.query({
-      network, 
-      address, 
-      abi, 
-      functionName: 'tokenURI', 
+      network,
+      address,
+      abi,
+      functionName: 'tokenURI',
       inputValues: [transferInformation.currentTokenIds[0]]
     })
 
     const response = await fetch(tokenUri)
+
+    if (response.status !== 200) {
+      return;
+    }
+
     const metadata = await response.text()
 
     try {
       JSON.parse(nft.metadata);
+      console.log('==========');
+      console.log('NFT Result:');
+      console.log('tokenUri :>> ', tokenUri);
+      console.log('response.status :>> ', response.status);
+      console.log('metadata :>> ', metadata);
+      console.log('==========');
       setNft({ metadata })
     } catch (error) {
       console.error('Error loading metadata from ' + response.url);
-      setNft({ })
+      setNft({})
     }
 
   }, [user]);
@@ -61,7 +74,7 @@ const NFTMintAndCheckTokenDemo = () => {
     const getUser = async () => {
       const user = await lib.activeUser(appId);
       setUser(user);
-    } 
+    }
 
     getUser();
   }, [])
@@ -78,7 +91,7 @@ const NFTMintAndCheckTokenDemo = () => {
         address: ContractInfo.address,
         abi: ContractInfo.abi,
         functionName: 'mint',
-        inputValues: [{ value: 1000000000000000 }], 
+        inputValues: [{ value: 1000000000000000 }],
         onSigned: () => setMessage("Sending Minting Request..."),
         onSent: () => setMessage("Waiting For Confirmation..."),
         onComplete: async () => {
@@ -100,7 +113,7 @@ const NFTMintAndCheckTokenDemo = () => {
     }
     setUser(user);
   }
-  
+
   const logout = () => {
     lib.logout(appId, false);
     setNft(null);
@@ -116,7 +129,7 @@ const NFTMintAndCheckTokenDemo = () => {
   return (
     <TWFullScreen>
       <div className='container mx-auto'>
-        { user && (
+        {user && (
           <div className='border-b px-3 py-6 flex justify-between'>
             <div>NFT Gated Content Demo</div>
             <div>
@@ -150,7 +163,7 @@ const NFTMintAndCheckTokenDemo = () => {
                 {gated ? (
                   <div className='text-center text-2xl'>
                     GATED CONTENT
-                  </div> 
+                  </div>
                 ) : (
                   <>
                     <div className='py-3'>
@@ -174,9 +187,9 @@ const NFTMintAndCheckTokenDemo = () => {
                         <>
                           <div className='py-3'>
                             To join our community you need to mint a token!
-                          </div>  
+                          </div>
                           <div className='pb-12 text-sm text-slate-500'>
-                            Minting costs 0.001 ETH 
+                            Minting costs 0.001 ETH
                           </div>
 
                           <TWButton
@@ -190,7 +203,7 @@ const NFTMintAndCheckTokenDemo = () => {
                           </TWButton>
                         </>
                       )}
-                      
+
 
                       {message && (
                         <div className='pt-3'>
@@ -199,15 +212,15 @@ const NFTMintAndCheckTokenDemo = () => {
                       )}
                     </div>
                   </>
-                )}                
-              </div> 
+                )}
+              </div>
             ) : (
               <>
                 {user === undefined ? (
                   <div className='h-screen flex flex-col justify-center'>
                     <div className='flex justify-center mb-36'>
                       <Orbit />
-                    </div>    
+                    </div>
                   </div>
                 ) : (
                   <div className='py-36'>
@@ -217,98 +230,25 @@ const NFTMintAndCheckTokenDemo = () => {
                     {sent ? (
                       <div className=''>
                         An email has been sent to you with a link to login.
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                         You can close this window.
                       </div>
                     ) : (
-                      <tailwind.SignInButton 
+                      <tailwind.SignInButton
                         appId={appId}
-                        className='bg-slate-200 px-3 py-1 rounded-lg' 
+                        className='bg-slate-200 px-3 py-1 rounded-lg'
                         onSignIn={login}
                       />
                     )}
                   </div>
                 )}
-              </>              
+              </>
             )}
-            
+
             {/* <WalletHasTokenFlowAPI contractMetadata={ContractInfo}/> */}
           </div>
         </TWCenteredContent>
-      </div>
-      <div className='hidden text-slate-800 justify-evenly cursor-pointer -mt-2'>
-        <div>
-          <div className="relative z-10 text-slate-500">
-            <div
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </div>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center -translate-y-36">
-                <div
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
-                    <div
-                      as="h3"
-                      className="text-xl font-medium leading-6 text-slate-800"
-                    >
-                      Sign In
-                    </div>
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Click to sign in with one of these methods:
-                      </p>
-                    </div>
-
-                    <div className="mt-3 py-3">
-                      <p className="text-sm text-slate-300 font-bold">
-                        [VARIOUS METHODS INCLUDING WALLET CONNECT]
-                      </p>
-                    </div>
-
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Or enter your email and we'll send you a magic link!
-                      </p>
-                    </div>
-
-                    <div className='mt-3'>
-                      <input
-                        type="email"
-                        className="border border-slate-300 px-3 py-1 w-10/12 rounded-md"
-                        placeholder="Email"
-                        required                        
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <button
-                        type="button"
-                        className="focus:outline-none inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"                        
-                      >
-                        Send Magic Link
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </TWFullScreen>
   )
