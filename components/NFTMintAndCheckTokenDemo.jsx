@@ -22,6 +22,8 @@ const NFTMintAndCheckTokenDemo = () => {
 
   const checkNfts = useCallback(async () => {
     const { network, address, abi } = ContractInfo;
+
+    console.log('contract address :>> ', address);
     
     const transferInformation = await lib.tokenTransfers(
       network, 
@@ -45,7 +47,14 @@ const NFTMintAndCheckTokenDemo = () => {
     const response = await fetch(tokenUri)
     const metadata = await response.text()
 
-    setNft({ metadata })
+    try {
+      JSON.parse(nft.metadata);
+      setNft({ metadata })
+    } catch (error) {
+      console.error('Error loading metadata from ' + response.url);
+      setNft({ })
+    }
+
   }, [user]);
 
   useEffect(() => {
