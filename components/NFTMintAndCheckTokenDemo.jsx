@@ -33,6 +33,8 @@ const NFTMintAndCheckTokenDemo = () => {
     if (transferInformation.currentTokenIds.length === 0) {
       return;
     }
+
+    console.log(transferInformation.currentTokenIds[0])
     
     const tokenUri = await lib.query({
       network, 
@@ -43,8 +45,14 @@ const NFTMintAndCheckTokenDemo = () => {
     })
 
     const response = await fetch(tokenUri)
+
+    if (response.status !== 200) {
+      return;
+    }
+
     const metadata = await response.text()
 
+    console.log("METADATA", tokenUri, response.status, metadata)
     setNft({ metadata })
   }, [user]);
 
@@ -227,79 +235,6 @@ const NFTMintAndCheckTokenDemo = () => {
             {/* <WalletHasTokenFlowAPI contractMetadata={ContractInfo}/> */}
           </div>
         </TWCenteredContent>
-      </div>
-      <div className='hidden text-slate-800 justify-evenly cursor-pointer -mt-2'>
-        <div>
-          <div className="relative z-10 text-slate-500">
-            <div
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </div>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center -translate-y-36">
-                <div
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center">
-                    <div
-                      as="h3"
-                      className="text-xl font-medium leading-6 text-slate-800"
-                    >
-                      Sign In
-                    </div>
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Click to sign in with one of these methods:
-                      </p>
-                    </div>
-
-                    <div className="mt-3 py-3">
-                      <p className="text-sm text-slate-300 font-bold">
-                        [VARIOUS METHODS INCLUDING WALLET CONNECT]
-                      </p>
-                    </div>
-
-                    <div className="mt-3">
-                      <p className="text-sm text-slate-500">
-                        Or enter your email and we'll send you a magic link!
-                      </p>
-                    </div>
-
-                    <div className='mt-3'>
-                      <input
-                        type="email"
-                        className="border border-slate-300 px-3 py-1 w-10/12 rounded-md"
-                        placeholder="Email"
-                        required                        
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <button
-                        type="button"
-                        className="focus:outline-none inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"                        
-                      >
-                        Send Magic Link
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </TWFullScreen>
   )

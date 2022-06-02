@@ -7139,10 +7139,10 @@ ethjs-util@0.1.6, ethjs-util@^0.1.3:
     is-hex-prefixed "1.0.0"
     strip-hex-prefix "1.0.0"
 
-ethos-react2@^0.0.25:
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/ethos-react2/-/ethos-react2-0.0.25.tgz#57ec916939ac81a2dc06a7fca93260ea06ea5fce"
-  integrity sha512-OfNNsUkxgFn2o0ZHLsY4itEewaagTDOjU9yESPaCpBMOLP/bHMPd9pPacjMAnwW+iKtiYv7p2HUt5zyQ+GGIMA==
+ethos-react2@^0.0.28:
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/ethos-react2/-/ethos-react2-0.0.28.tgz#054a6146ec5a6be5ae991366638e6d24cb1b68d8"
+  integrity sha512-KiAnwPEFJMlWiN2eqa2pa8lpfANjb1BoriWmkPjVtNz5yo3MZaKUq6hyXyKY40cl8Za4EKSFdEFrr2hiWvDruQ==
   dependencies:
     "@babel/polyfill" "^7.12.1"
     "@headlessui/react" "^1.6.0"
