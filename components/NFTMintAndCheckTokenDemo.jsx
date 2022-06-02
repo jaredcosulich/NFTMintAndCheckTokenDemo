@@ -23,8 +23,6 @@ const NFTMintAndCheckTokenDemo = () => {
   const checkNfts = useCallback(async () => {
     const { network, address, abi } = ContractInfo;
 
-    console.log('contract address :>> ', address);
-
     const transferInformation = await lib.tokenTransfers(
       network,
       user.wallet.address,
@@ -54,17 +52,19 @@ const NFTMintAndCheckTokenDemo = () => {
 
     const metadata = await response.text()
 
+    console.log('==========');
+    console.log('NFT Result:');
+    console.log('tokenUri :>> ', tokenUri);
+    console.log('response.status :>> ', response.status);
+    console.log('metadata :>> ', metadata);
+    console.log('==========');
+
     try {
-      JSON.parse(nft.metadata);
-      console.log('==========');
-      console.log('NFT Result:');
-      console.log('tokenUri :>> ', tokenUri);
-      console.log('response.status :>> ', response.status);
-      console.log('metadata :>> ', metadata);
-      console.log('==========');
+      JSON.parse(metadata);
       setNft({ metadata })
     } catch (error) {
-      console.error('Error loading metadata from ' + response.url);
+      console.error(error);
+      console.log('Error loading metadata from ' + response.url);
       setNft({})
     }
 
